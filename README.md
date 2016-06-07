@@ -14,7 +14,7 @@ Check out my first few projects at [Codepen](http://codepen.io/collection/AOENPY
 
 Unfortunately, the non-Pro version of Codepen does not give you a way to load assets, like JSON files. The follow projects instead are currently run locally.
 
-- [Project 6 - ](A Map)
+- [Project 6 - A Map](http://codepen.io/tommyt/pen/pbJBJq)
   - Use [http-server](https://github.com/indexzero/http-server), [TopoJSON](https://github.com/mbostock/topojson), and [GDAL](http://www.gdal.org/)
 
     ./node_modules/http-server/bin/http-server -p 8008 &
