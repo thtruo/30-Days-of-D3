@@ -6,28 +6,124 @@
   <script src="http://d3js.org/topojson.v1.min.js"></script>
   <style>
 
+    text {
+      font-family: "Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 9px;
+      pointer-events: none;
+    }
+    .place, .place-label {
+      fill: #444;
+    }
+    .subunit.SCT {
+      fill: #D4DFE6;
+    }
+    .subunit.WLS {
+      fill: #f4f7f7;
+    }
+    .subunit.NIR {
+      fill: #e1eef6;
+    }
+    .subunit.ENG {
+      fill: #dae9f4;
+    }
+    .subunit.IRL {
+      fill: #f0f5f9;
+    }
+    .subunit-boundary.IRL {
+      stroke: #aaa;
+    }
+    .subunit-boundary {
+      fill: none;
+      stroke: #777;
+      stroke-dasharray: 2, 2;
+      stroke-linejoin: round;
+    }
+    .subunit-label {
+      font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      fill: #888;
+      fill-opacity: 0.7;
+      font-size: 20px;
+      font-weight: 300;
+      text-anchor: middle;
+    }
   </style>
 </head>
 <body>
 
   <script>
-    var width = 960;
-    var height = 1160;
+    var width = 960,
+        height = 1160;
 
-    var svg = d3.select("body")
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height);
+    // Define projection from spherical coordinates to 2D plane
+    // https://en.wikipedia.org/wiki/Albers_projection
+    var projection = d3.geo.albers()
+        .center([0, 55.4])
+        .rotate([4.4, 0])
+        .parallels([50, 60])
+        .scale(6000)
+        .translate([width / 2, height / 2]);
 
-    // Load TopoJSON file
+    // Path generator to formats projected 2D geometry for SVG
+    var path = d3.geo.path()
+        .projection(projection)
+        .pointRadius(2); // radius for city circle
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
     d3.json("uk.json", function(error, uk) {
-      if (error) return console.error(error);
-        svg.append("path")
-           .datum(topojson.feature(uk, uk.objects.subunits))
-           .attr("d", d3.geo.path().projection(d3.geo.mercator()));
+      if (error) { console.log("error"); }
+
+      // Conversion back to GeoJSON
+      var subunits = topojson.feature(uk, uk.objects.subunits);
+      var places = topojson.feature(uk, uk.objects.places);
+
+      // Render geography polygons for each country
+      svg.selectAll(".subunit")
+          .data(subunits.features)
+          .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id; })
+          .attr("d", path);
+
+      // Render interior boundaries (does not include Ireland)
+      svg.append("path")
+         .datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a !== b && a.id !== "IRL"; }))
+         .attr("d", path)
+         .attr("class", "subunit-boundary");
+
+      // Render exterior boundary (includes Ireland coastline)
+      svg.append("path")
+         .datum(topojson.mesh(uk, uk.objects.subunits, function(a, b) { return a === b && a.id === "IRL"; }))
+         .attr("d", path)
+         .attr("class", "subunit-boundary IRL");
+
+      // Render places
+      svg.append("path")
+         .datum(places)
+         .attr("d", path)
+         .attr("class", "place");
+
+      // Draw cities as circles with labels
+      svg.selectAll(".place-label")
+         .data(places.features)
+         .enter().append("text")
+         .attr("class", "place-label")
+         .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+         .attr("dy", "0.35em")
+         .attr("x", function(d) { return d.geometry.coordinates[0] > -1 ? 6 : -6; })
+         .style("text-anchor", function(d) { return d.geometry.coordinates[0] > -1 ? "start" : "end"; })
+         .text(function(d) { return d.properties.name; });
+
+      // Render country labels
+      svg.selectAll(".subunit-label")
+         .data(subunits.features)
+         .enter().append("text")
+         .attr("class", function(d) { return "subunit-label " + d.id; })
+         .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+        .attr("dy", "0.35em")
+        .text(function(d) { return d.properties.name; });
     });
-
-
 
   </script>
 </body>
