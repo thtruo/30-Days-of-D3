@@ -22,9 +22,22 @@
     // Load TopoJSON file
     d3.json("uk.json", function(error, uk) {
       if (error) return console.error(error);
+
+        // Convert back to GeoJSON for display
+        var subunits = topojson.feature(uk, uk.objects.subunits);
+
+        // Define projection of spherical coordinates to 2D plane
+        var projection = d3.geo.mercator()
+                               .scale(500)
+                               .translate([width / 2, height / 2])
+
+        // Path generator for projected 2D coordinates to format display for SVG
+        var path = d3.geo.path().projection(d3.geo.mercator());
+
+        // Add path element bounded to GeoJSON data
         svg.append("path")
-           .datum(topojson.feature(uk, uk.objects.subunits))
-           .attr("d", d3.geo.path().projection(d3.geo.mercator()));
+           .datum(subunits)
+           .attr("d", path);
     });
 
 
