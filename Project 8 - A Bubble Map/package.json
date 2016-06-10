@@ -1,0 +1,11 @@
+{
+  "name": "a_bubble_map",
+  "version": "0.0.1",
+  "description": "Making a bubble map. Part of the \"30 Days of D3\" project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Truongchau",
+  "license": "ISC"
+}
