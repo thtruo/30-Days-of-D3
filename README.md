@@ -8,27 +8,35 @@ Check out some projects at [Codepen](http://codepen.io/collection/AOENPY/). Unfo
 # Projects
 
 [Project 1 - Bar Chart](http://codepen.io/tommyt/pen/QEwzWz)
+
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%201%20-%20Simple%20Bar%20Chart.png" alt="Simple Bar Chart Screenshot" width="200">
 
 [Project 2 - SVG Circles](http://codepen.io/tommyt/pen/WxbLRm)
+
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%202%20-%20SVG%20Circles.png" alt="SVG Circles Screenshot" width="200">
 
 [Project 3 - SVG Bar Chart](http://codepen.io/tommyt/pen/jrPqKy)
+
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%203%20-%20SVG%20Bar%20Chart.png" alt="SVG Bar Chart Screenshot" width="200">
 
 [Project 4 - Simple Scatterplot](http://codepen.io/tommyt/pen/RRPxYy)
+
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%204%20-%20Simple%20Scatterplot.png" alt="Simple Scatterplot Screenshot" width="200">
 
 [Project 5 - Scatterplot and Axes](http://codepen.io/tommyt/pen/jrPRPe)
+
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%205%20-%20Scatterplots%20and%20Axes.png" alt="Scatterplot and Axes Screenshot" width="200">
 
 [Project 6 - A Map](http://codepen.io/tommyt/pen/pbJBJq)
+
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%206%20-%20A%20Map.png" alt="A Map Screenshot" width="200">
 
 [Project 7 - D3 Animated Clock](http://codepen.io/tommyt/pen/JKGdgv)
+
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%207%20-%20Animated%20Clock.png" alt="Animated Clock Screenshot" width="200">
 
 [Project 8 - US Population Bubble Map](http://codepen.io/tommyt/pen/OXMygM)
+
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%208%20-%20US%20Population%20Map.png" alt="US Population Bubble Map Screenshot" width="200">
 
 # Reach Me
