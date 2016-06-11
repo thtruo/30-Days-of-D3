@@ -12,12 +12,13 @@
       margin-top: 30px;
     }
     h1, h2 {
-      text-align: center;
       text-transform: uppercase;
+      text-align: center;
     }
     h1 {
       font-size: 48px;
-      margin-bottom: 30px;
+      margin-top: 30px;
+      margin-bottom: 0px;
     }
     h2 {
       font-size: 32px;
@@ -55,8 +56,9 @@
   <script src="//d3js.org/topojson.v1.min.js"></script>
 
   <div class="wrapper">
-    <h1>Bubble Map</h1>
-    <h2>US Population</h2>
+    <h1>US Population</h1>
+    <h2>Pan and zoom around</h2>
+
   </div>
 
   <script>
@@ -101,6 +103,10 @@
          .data(topojson.feature(us, us.objects.counties).features.sort(function(a, b) { return b.properties.population - a.properties.population; }))
          .enter().append("circle")
          .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+         .attr("r", 1.5)
+         .transition()
+         .delay(100)
+         .duration(1500)
          .attr("r", function(d) { return radius(d.properties.population); });
 
       // Display legend
