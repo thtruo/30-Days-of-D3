@@ -24,11 +24,30 @@
       font-size: 32px;
       color: #888;
     }
-    path {
+    .land {
+      fill: #ddd;
+    }
+    .border {
       fill: none;
-      stroke: #333;
+      stroke: #fff;
       stroke-linejoin: round;
       stroke-linecap: round;
+    }
+    circle {
+      fill: #000;
+      fill-opacity: 0.5;
+      stroke: #fff;
+      stroke-width: 0.4px;
+    }
+    .legend circle {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 1px;
+    }
+    .legend text {
+      fill: #777;
+      font: 10px sans-serif;
+      text-anchor: middle;
     }
   </style>
 </head>
@@ -49,20 +68,59 @@
     var path = d3.geo.path()
                  .projection(null);
 
-    var svg = d3.select("body")
+    var svg = d3.select(".wrapper")
                 .append("svg")
                 .attr("class", "main")
                 .attr("width", width)
                 .attr("height", height);
 
-    d3.json("build/counties.json", function(error, us) {
+    d3.json("us.json", function(error, us) {
       if (error) {
         return console.error(error);
       }
 
+      var radius = d3.scale.sqrt()
+                     .domain([0, 1e6])
+                     .range([0, 15]);
+
+      // Display base map
       svg.append("path")
-         .datum(topojson.mesh(us))
+         .datum(topojson.feature(us, us.objects.nation))
+         .attr("class", "land")
          .attr("d", path);
+
+      // Display state boundaries
+      svg.append("path")
+         .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+         .attr("class", "border border--state")
+         .attr("d", path);
+
+      // Display population bubble
+      svg.append("g")
+         .attr("class", "bubble")
+         .selectAll("circle")
+         .data(topojson.feature(us, us.objects.counties).features.sort(function(a, b) { return b.properties.population - a.properties.population; }))
+         .enter().append("circle")
+         .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+         .attr("r", function(d) { return radius(d.properties.population); });
+
+      // Display legend
+      var legend = svg.append("g")
+                      .attr("class", "legend")
+                      .attr("transform", "translate(" + (width - 50) + "," + (height - 20) + ")")
+                      .selectAll("g")
+                      .data([1e6, 3e6, 6e6])
+                      .enter().append("g");
+
+      legend.append("circle")
+          .attr("cy", function(d) { return -radius(d); })
+          .attr("r", radius);
+
+      legend.append("text")
+          .attr("y", function(d) { return -2 * radius(d); })
+          .attr("dy", "1.3em")
+          .text(d3.format(".1s"));
+
     });
 
   </script>
