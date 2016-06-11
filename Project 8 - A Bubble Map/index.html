@@ -24,8 +24,16 @@
       font-size: 32px;
       color: #888;
     }
+    .background {
+      fill: none;
+      pointer-events: all;
+    }
     .land {
       fill: #E0E3DA;
+      cursor: pointer;
+    }
+    .land.active {
+      fill: orange;
     }
     .border {
       fill: none;
@@ -57,7 +65,7 @@
 
   <div class="wrapper">
     <h1>US Population</h1>
-    <h2>Pan and zoom around</h2>
+    <h2>Click or Pan/Zoom Around</h2>
 
   </div>
 
@@ -65,6 +73,13 @@
 
     var width = 960;
     var height = 600;
+    var active = d3.select(null);
+
+    var zoom = d3.behavior.zoom()
+                 .translate([0, 0])
+                 .scale(1)
+                 .scaleExtent([1, 8])
+                 .on("zoom", zoomed);
 
     var path = d3.geo.path()
                  .projection(null);
@@ -73,7 +88,20 @@
                 .append("svg")
                 .attr("class", "main")
                 .attr("width", width)
-                .attr("height", height);
+                .attr("height", height)
+                .on("click", stopped, true);
+
+    // Render background first to detect zoom events
+    svg.append("rect")
+        .attr("class", "background")
+        .attr("width", width)
+        .attr("height", height)
+        .on("click", reset);
+
+    var g = svg.append("g");
+
+    svg.call(zoom)
+       .call(zoom.event);
 
     d3.json("us.json", function(error, us) {
       if (error) {
@@ -85,19 +113,20 @@
                      .range([0, 15]);
 
       // Display base map
-      svg.append("path")
+      g.append("path")
          .datum(topojson.feature(us, us.objects.nation))
          .attr("class", "land")
-         .attr("d", path);
+         .attr("d", path)
+         .on("click", clicked);
 
       // Display state boundaries
-      svg.append("path")
+      g.append("path")
          .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
          .attr("class", "border border--state")
          .attr("d", path);
 
       // Display population bubble
-      svg.append("g")
+      g.append("g")
          .attr("class", "bubble")
          .selectAll("circle")
          .data(topojson.feature(us, us.objects.counties).features.sort(function(a, b) { return b.properties.population - a.properties.population; }))
@@ -119,15 +148,53 @@
                       .attr("class", "bubble");
 
       legend.append("circle")
-          .attr("cy", function(d) { return -radius(d); })
-          .attr("r", radius);
+             .attr("cy", function(d) { return -radius(d); })
+             .attr("r", radius);
 
       legend.append("text")
-          .attr("y", function(d) { return -2 * radius(d); })
-          .attr("dy", "1.3em")
-          .text(d3.format(".1s"));
-
+            .attr("y", function(d) { return -2 * radius(d); })
+            .attr("dy", "1.3em")
+            .text(d3.format(".1s"));
     });
+
+    // Zoom to bounding box event handlers
+    function clicked(d) {
+      if (active.node() === this) return reset();
+      active.classed("active", false);
+      active = d3.select(this).classed("active", true);
+
+      var bounds = path.bounds(d),
+          dx = bounds[1][0] - bounds[0][0],
+          dy = bounds[1][1] - bounds[0][1],
+          x = (bounds[0][0] + bounds[1][0]) / 2,
+          y = (bounds[0][1] + bounds[1][1]) / 2,
+          scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height))),
+          translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+      svg.transition()
+          .duration(750)
+          .call(zoom.translate(translate).scale(scale).event);
+    }
+
+    function reset() {
+      active.classed("active", false);
+      active = d3.select(null);
+
+      svg.transition()
+          .duration(750)
+          .call(zoom.translate([0, 0]).scale(1).event);
+    }
+
+    function zoomed() {
+      g.style("stroke-width", 1.5 / d3.event.scale + "px");
+      g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    }
+
+    // If the drag behavior prevents the default click,
+    // also stop propagation so we don’t click-to-zoom.
+    function stopped() {
+      if (d3.event.defaultPrevented) d3.event.stopPropagation();
+    }
 
   </script>
 </body>
