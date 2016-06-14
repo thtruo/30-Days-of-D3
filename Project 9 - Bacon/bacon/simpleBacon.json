@@ -1,0 +1,25 @@
+{
+  nodes: [
+    {
+      actor: "Kevin Bacon"
+    },
+    {
+      actor: "Tom Hanks"
+    },
+    {
+      actor: "Meg Ryan"
+    },
+    {
+      actor: "Parker Rosey"
+    },
+    {
+      actor: "Lisa Kudrow"
+    },
+    {
+      actor: "W.C. Fields"
+    },
+    {
+      actor: "George Burns"
+    }
+  ]
+}

@@ -39,6 +39,11 @@ Check out some projects at [Codepen](http://codepen.io/collection/AOENPY/). Unfo
 
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%208%20-%20US%20Population%20Map.png" alt="US Population Bubble Map Screenshot" width="200">
 
+[Project 9 - A Simple Kevin Bacon Graph](http://codepen.io/tommyt/pen/YWwEvm)
+
+<img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%209%20-%20A%20Simple%20Kevin%20Bacon%20Graph.png" alt="A Simple Kevin Bacon Graph Screenshot" width="200">
+
+
 # Reach Me
 
 Twitter: [@ttruongchau](https://twitter.com/ttruongchau)
