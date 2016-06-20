@@ -1,0 +1,11 @@
+{
+  "name": "uspopulationpiechart",
+  "version": "0.0.1",
+  "description": "A pie chart representing the US population segmented by age group",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Truongchau",
+  "license": "ISC"
+}
