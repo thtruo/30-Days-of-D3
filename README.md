@@ -43,6 +43,10 @@ Check out some projects at [Codepen](http://codepen.io/collection/AOENPY/). Unfo
 
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%209%20-%20Bacon.png" alt="A Simple Kevin Bacon Graph Screenshot" width="200">
 
+[Project 10 - Flight Animation]()
+
+<img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%2010%20-%20Flight%20Animation.png" alt="Flight Animation" width="200">
+
 
 # Reach Me
 
