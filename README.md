@@ -52,6 +52,11 @@ Check out some projects at [Codepen](http://codepen.io/collection/AOENPY/). Unfo
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%2011%20-%20Pie%20Chart%20US%20Population.png" alt="US Population Age Group Pie Chart" width="200">
 
 
+[Project 12 - US Population Age Group Donut Chart](http://codepen.io/tommyt/pen/vKXrNL)
+
+<img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%2012%20-%20Donut%20Chart%20US%20Population.png" alt="US Population Age Group Donut Chart" width="200">
+
+
 # Reach Me
 
 Twitter: [@ttruongchau](https://twitter.com/ttruongchau)
