@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: "Avenir", "Helvetica Neue", Helvetica, sans-serif;
+      width: 100%;
+    }
+    h1, h2 {
+      text-transform: uppercase;
+      text-align: center;
+    }
+    h1 {
+      font-size: 48px;
+      margin-top: 30px;
+      margin-bottom: 0px;
+    }
+    h2 {
+      font-size: 32px;
+      color: #888;
+    }
+
+    /* SVG */
+    svg.main {
+      display: block;
+      margin: 0 auto;
+      margin-top: 30px;
+    }
+    .background {
+      fill: none;
+      pointer-events: all;
+    }
+    .countries {
+      fill: #b0d0ab;
+      stroke: #6cb0e0;
+      stroke-width: 0.5px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+    .airports {
+      fill: #036;
+      stroke: #6cb0e0;
+      stroke-width: 0.5px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+  </style>
+</head>
+<body>
+  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="//d3js.org/topojson.v1.min.js"></script>
+
+  <div class="wrapper">
+    <h1>Flight Animation Across the World</h1>
+    <h2></h2>
+  </div>
+
+  <script>
+
+    var width = 960;
+    var height = 600;
+    var path = d3.geo.path()
+                 .projection(null);
+
+    var svg = d3.select(".wrapper")
+                .append("svg")
+                .attr("class", "main")
+                .attr("width", width)
+                .attr("height", height);
+
+  </script>
+</body>
+
+<!-- Start local server by running `node_modules/.bin/http-server -p 8008` -->
