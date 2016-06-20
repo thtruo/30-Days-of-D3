@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%2010%20-%20Flight%20Animation.png" alt="Flight Animation" width="200">
+
 ## Create TopoJSON world map
 
     # Download "Admin 0 - Countries" zip file from Natural Earth
