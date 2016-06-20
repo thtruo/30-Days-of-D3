@@ -47,6 +47,10 @@ Check out some projects at [Codepen](http://codepen.io/collection/AOENPY/). Unfo
 
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%2010%20-%20Flight%20Animation.png" alt="Flight Animation" width="200">
 
+[Project 11 - US Population Age Group Pie Chart](http://codepen.io/tommyt/pen/aZmGvq)
+
+<img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%2011%20-%20Pie%20Chart%20US%20Population.png" alt="US Population Age Group Pie Chart" width="200">
+
 
 # Reach Me
 
