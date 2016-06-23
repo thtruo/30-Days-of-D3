@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: "Avenir", "Helvetica Neue", Helvetica, sans-serif;
+      width: 100%;
+      color: #000;
+    }
+    h1, h2 {
+      text-transform: uppercase;
+      text-align: center;
+    }
+    h1 {
+      font-size: 48px;
+      margin-top: 30px;
+      margin-bottom: 0px;
+    }
+    h2 {
+      font-size: 28px;
+      color: #888;
+    }
+
+    /* SVG */
+    svg.main {
+      display: block;
+      margin: 0 auto;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <div class="wrapper">
+    <h1>Force Layout Repulsion</h1>
+    <h2>Mousemove Event</h2>
+  </div>
+
+  <script>
+
+    var width = 960;
+    var height = 520;
+
+    // Create nodes
+    var nodes = d3.range(200).map(function() {
+      return { radius: Math.random() * 15 + 4 };
+    });
+    var root = nodes[0];
+    var color = d3.scale.category20();
+
+    root.radius = 0;
+    root.fixed = true;
+
+    // Define force layout
+    var force = d3.layout.force()
+      .gravity(0.08)
+      .charge(function(d, i) { return i ? 0 : -2000; })
+      .nodes(nodes)
+      .size([width, height]);
+    force.start();
+
+    // Render
+    var svg = d3.select(".wrapper")
+      .append("svg")
+      .attr("class", "main")
+      .attr("width", width)
+      .attr("height", height);
+
+    svg.selectAll("circle")
+      .data(nodes.slice(1))
+      .enter()
+      .append("circle")
+      .attr("class", "node")
+      .attr("r", function(d) { return d.radius; })
+      .attr("fill", function(d, i) { return color(i % 4); });
+
+    // Define `tick` event
+    force.on("tick", function(event) {
+      var q = d3.geom.quadtree(nodes);
+      var i = 0;
+      var n = nodes.length;
+
+      // Visit every node invoking the `collide` callback function
+      while (i < n) {
+        q.visit(collide(nodes[i]));
+        i++;
+      }
+      svg.selectAll("circle")
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+    });
+
+    // Mousemove event handler
+    svg.on("mousemove", function() {
+      var m = d3.mouse(this);
+      root.px = m[0];
+      root.py = m[1];
+      force.resume();
+    });
+
+    // Define collision
+    function collide(node) {
+      var r = node.radius + 16;
+      var nx1 = node.x - r;
+      var nx2 = node.x + r;
+      var ny1 = node.y - r;
+      var ny2 = node.y + r;
+
+      return function(quad, x1, y1, x2, y2) {
+        if (quad.point && (quad.point !== node)) {
+          var x = node.x - quad.point.x;
+          var y = node.y - quad.point.y;
+          var l = Math.sqrt(x * x + y * y);
+          var r = node.radius + quad.point.radius;
+
+          if (l < r) {
+            l = (l - r) / l * 0.5;
+            node.x -= x *= l;
+            node.y -= y *= l;
+            quad.point.x += x;
+            quad.point.y += y;
+          }
+        }
+        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+      };
+    }
+  </script>
+</body>
+
+<!-- Start local server by running `node_modules/.bin/http-server -p 8008` -->
