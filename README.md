@@ -71,7 +71,8 @@ Check out some projects at [Codepen](http://codepen.io/collection/AOENPY/). Unfo
 # Reach Me
 
 Twitter: [@ttruongchau](https://twitter.com/ttruongchau)
-[thomastruongchau.com](http://thomastruongchau.com)
+
+Check out [thomastruongchau.com](http://thomastruongchau.com)
 
 <!-- [TopoJSON](https://github.com/mbostock/topojson), [GDAL](http://www.gdal.org/) -->
 <!-- ![A Map Screenshot](https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%206%20-%20A%20Map.png) -->
