@@ -17,7 +17,7 @@
       margin-bottom: 0px;
     }
     h2 {
-      font-size: 28px;
+      font-size: 24px;
       color: #888;
     }
 
@@ -35,17 +35,22 @@
       stroke: #fff;
     }
     .path-background {
-      fill: none;
-      stroke: #000;
-      stroke-width: 1px;
+      fill: #FCFBFD;
+      stroke-width: 0px;
     }
     .path-foreground {
-      fill: orange;
-      /*stroke: #000;*/
+      fill: #011627;
+    }
+    .path-foreground-seconds {
+      fill: #E71D36;
     }
     .label {
-      font: 24px sans-serif;
+      font: 20px sans-serif;
       text-anchor: middle;
+      fill: #011627;
+    }
+    .label-seconds {
+      fill: #E71D36;
     }
   </style>
 </head>
@@ -53,37 +58,38 @@
   <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
   <div class="wrapper">
-    <h1>Arc Clock</h1>
-    <h2></h2>
+    <h1><i class="fa fa-clock-o" aria-hidden="true"></i> Arclock</h1>
+    <h2>Just An Arc Clock</h2>
   </div>
 
   <script>
 
-    var width = 960;
-    var height = 960; //480
+    var width = 600;
+    var height = 480;
 
     // Clock fields
     var fields = [
-      { value: 24,
-        size: 24,
-        label: "h",
-        update: function(date) { return date.getHours(); }
-      },
-      { value: 60,
-        size: 60,
-        label: "m",
-        update: function(date) { return date.getMinutes(); }
-      },
       { value: 60,
         size: 60,
         label: "s",
         update: function(date) { return date.getSeconds(); }
+      },
+      { value: 60,
+        size: 60,
+        label: "m:",
+        update: function(date) { return date.getMinutes(); }
+      },
+      { value: 24,
+        size: 24,
+        label: "h:",
+        update: function(date) { return date.getHours(); }
       }
     ];
 
     var arcMin = 75; // inner radius
-    var arcWidth = 20; // width
+    var arcWidth = 30; // width
     var arcPad = 1; // padding between arcs
+    var cornerRadius = 14; // radius for rounded corner
 
     // Define arc for each field
     var arc = d3.svg.arc()
@@ -96,6 +102,9 @@
       .startAngle(0)
       .endAngle(function(d, i) {
         return (d.value / d.size) * 2 * Math.PI;
+      })
+      .cornerRadius(function(d) {
+        return cornerRadius;
       });
 
     var svg = d3.select(".wrapper")
@@ -109,8 +118,7 @@
       .enter()
       .append("g")
       .attr("transform", function(d, i) {
-        // return "translate(" + (i * 2 + 1.25) / 6.5 * width + "," + height / 2 + ")";
-        return "translate(" + width / 2 + "," + (i * 2 + 1.25) / 6.5 * height + ")";
+        return "translate(" + width / 2 + "," + height / 2 + ")";
       })
       .attr("class", "field");
 
@@ -119,14 +127,32 @@
       .attr("d", arc);
 
     var path = field.append("path")
-      .attr("class", "path path-foreground")
-      // .attr("fill", function(d, i) {
-      //   return "orange";
-      // });
+      .attr("class", function(d, i) {
+        if (i === 0) {
+          return "path path-foreground-seconds";
+        }
+        return "path path-foreground";
+      });
 
     var label = field.append("text")
-      .attr("class", "label")
-      .attr("dy", "0.35em");
+      .attr("class", function(d, i) {
+        if (i === 0) {
+          return "label label-seconds";
+        }
+        return "label";
+      })
+      .attr("dy", "0.35em")
+      .attr("dx", function(d, i) {
+        if (i === 0) {
+          return "2.2em";
+        }
+        else if (i === 1) {
+          return "0.2em";
+        }
+        else if (i === 2) {
+          return "-2.2em";
+        }
+      });
 
     // Custom tween function draws intermediary steps of path
     function arcTween(d, i) {
