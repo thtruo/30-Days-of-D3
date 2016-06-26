@@ -39,6 +39,10 @@
       stroke: #000;
       stroke-width: 1px;
     }
+    .path-foreground {
+      fill: orange;
+      /*stroke: #000;*/
+    }
     .label {
       font: 24px sans-serif;
       text-anchor: middle;
@@ -56,7 +60,7 @@
   <script>
 
     var width = 960;
-    var height = 600;
+    var height = 960; //480
 
     // Clock fields
     var fields = [
@@ -77,12 +81,20 @@
       }
     ];
 
+    var arcMin = 75; // inner radius
+    var arcWidth = 20; // width
+    var arcPad = 1; // padding between arcs
+
     // Define arc for each field
     var arc = d3.svg.arc()
-      .outerRadius(width / 6.5 - 5)
-      .innerRadius(width / 7.5 - 0) // 60
+      .outerRadius(function(d, i) {
+        return arcMin + ((i + 1) * arcWidth);
+      })
+      .innerRadius(function(d, i) {
+        return arcMin + i * (arcWidth) + arcPad;
+      })
       .startAngle(0)
-      .endAngle(function(d) {
+      .endAngle(function(d, i) {
         return (d.value / d.size) * 2 * Math.PI;
       });
 
@@ -97,7 +109,8 @@
       .enter()
       .append("g")
       .attr("transform", function(d, i) {
-        return "translate(" + (i * 2 + 1.25) / 6.5 * width + "," + height / 2 + ")";
+        // return "translate(" + (i * 2 + 1.25) / 6.5 * width + "," + height / 2 + ")";
+        return "translate(" + width / 2 + "," + (i * 2 + 1.25) / 6.5 * height + ")";
       })
       .attr("class", "field");
 
@@ -106,16 +119,21 @@
       .attr("d", arc);
 
     var path = field.append("path")
-      .attr("class", "path path-foreground");
+      .attr("class", "path path-foreground")
+      // .attr("fill", function(d, i) {
+      //   return "orange";
+      // });
 
     var label = field.append("text")
       .attr("class", "label")
       .attr("dy", "0.35em");
 
-    function arcTween(b) {
-      var i = d3.interpolate({ value: b.previous}, b);
+    // Custom tween function draws intermediary steps of path
+    function arcTween(d, i) {
+      var interp = d3.interpolate({ value: d.previous }, d);
       return function(t) {
-        return arc(i(t));
+        var tmp = interp(t);
+        return arc(interp(t), i);
       };
     }
 
@@ -123,7 +141,8 @@
       var now = new Date();
 
       field.each(function(d) {
-        d.previous = d.value, d.value = d.update(now);
+        d.previous = d.value;
+        d.value = d.update(now);
       });
 
       path.transition()
