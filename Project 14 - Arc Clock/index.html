@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: "Avenir", "Helvetica Neue", Helvetica, sans-serif;
+      width: 100%;
+      color: #000;
+    }
+    h1, h2 {
+      text-transform: uppercase;
+      text-align: center;
+    }
+    h1 {
+      font-size: 48px;
+      margin-top: 30px;
+      margin-bottom: 0px;
+    }
+    h2 {
+      font-size: 28px;
+      color: #888;
+    }
+
+    /* SVG */
+    svg.main {
+      display: block;
+      margin: 0 auto;
+      margin-top: 30px;
+    }
+    .arc text {
+      font: 10px sans-serif,
+      text-anchor: middle;
+    }
+    .arc path {
+      stroke: #fff;
+    }
+    .path-background {
+      fill: none;
+      stroke: #000;
+      stroke-width: 1px;
+    }
+    .label {
+      font: 24px sans-serif;
+      text-anchor: middle;
+    }
+  </style>
+</head>
+<body>
+  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <div class="wrapper">
+    <h1>Arc Clock</h1>
+    <h2></h2>
+  </div>
+
+  <script>
+
+    var width = 960;
+    var height = 600;
+
+    // Clock fields
+    var fields = [
+      { value: 24,
+        size: 24,
+        label: "h",
+        update: function(date) { return date.getHours(); }
+      },
+      { value: 60,
+        size: 60,
+        label: "m",
+        update: function(date) { return date.getMinutes(); }
+      },
+      { value: 60,
+        size: 60,
+        label: "s",
+        update: function(date) { return date.getSeconds(); }
+      }
+    ];
+
+    // Define arc for each field
+    var arc = d3.svg.arc()
+      .outerRadius(width / 6.5 - 5)
+      .innerRadius(width / 7.5 - 0) // 60
+      .startAngle(0)
+      .endAngle(function(d) {
+        return (d.value / d.size) * 2 * Math.PI;
+      });
+
+    var svg = d3.select(".wrapper")
+      .append("svg")
+      .attr("class", "main")
+      .attr("width", width)
+      .attr("height", height);
+
+    var field = svg.selectAll(".field")
+      .data(fields)
+      .enter()
+      .append("g")
+      .attr("transform", function(d, i) {
+        return "translate(" + (i * 2 + 1.25) / 6.5 * width + "," + height / 2 + ")";
+      })
+      .attr("class", "field");
+
+    field.append("path")
+      .attr("class", "path path-background")
+      .attr("d", arc);
+
+    var path = field.append("path")
+      .attr("class", "path path-foreground");
+
+    var label = field.append("text")
+      .attr("class", "label")
+      .attr("dy", "0.35em");
+
+    function arcTween(b) {
+      var i = d3.interpolate({ value: b.previous}, b);
+      return function(t) {
+        return arc(i(t));
+      };
+    }
+
+    (function update() {
+      var now = new Date();
+
+      field.each(function(d) {
+        d.previous = d.value, d.value = d.update(now);
+      });
+
+      path.transition()
+        .ease("bounce")
+        .duration(640)
+        .attrTween("d", arcTween);
+
+      label
+        .text(function(d) {
+          return d.value + d.label;
+        });
+
+      setTimeout(update, 1000 - (now % 1000));
+    })();
+
+  </script>
+</body>
+
+<!-- Start local server by running `node_modules/.bin/http-server -p 8008` -->
