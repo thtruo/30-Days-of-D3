@@ -1,0 +1,11 @@
+{
+  "name": "fitbitsteps",
+  "version": "0.0.1",
+  "description": "A time-series plot of my steps from March to May 2016",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Truongchau",
+  "license": "ISC"
+}
