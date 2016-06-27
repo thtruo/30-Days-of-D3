@@ -64,6 +64,11 @@ Check out some projects at [Codepen](http://codepen.io/collection/AOENPY/). Unfo
 
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%2014%20-%20Arclock.png" alt="Arclock" width="300">
 
+
+[Project 15 - Fitbit Steps](http://codepen.io/tommyt/pen/jrydym)
+
+<img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%2015%20-%20Fitbit%20Steps.png" alt="Fitbit Steps Line Chart" width="300">
+
 <!-- [Project X - Choropleth]()
 
 <img src="https://raw.githubusercontent.com/thtruo/30-Days-of-D3/master/img/Project%2013%20-%20Force%20Layout%20Repulsion.png" alt="Choropleth" width="300"> -->
